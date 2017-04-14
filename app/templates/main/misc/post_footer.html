@@ -1,0 +1,40 @@
+{% if display_copyright %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <hr>
+        <p><strong>{{ copyright_msg }}</strong></p>
+    <hr>
+    </div>
+
+</div>
+{% endif %}
+<br>
+
+{% if allow_donate %}
+<div class="row">
+    <!-- donate -->
+    <div class ="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p>{{ donation_msg }}</p>
+        <a id="btn_donate" class="btn_donate" href="#" title="Donate">
+        <i class="fa fa-usd"></i> | <i class="fa fa-jpy"></i>
+        </a>                  
+        <br>
+      <!-- weixin -->
+        <img src="static/img/weixin-pay.png" title="Donate">
+    </div>
+    <!-- donate --> 
+    
+</div>
+<br>
+{% endif %}
+
+{% if display_wechat %}
+<div class="row">
+    <!-- donate -->
+    <div class ="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p>{{ wechat_msg }} <i class="fa fa-weixin" aria-hidden="true"></i></p>
+        <img src="static/img/liaotian-view.jpg" title="liaotian2020">
+    </div>
+    
+</div>
+{% endif %}
