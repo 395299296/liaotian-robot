@@ -11,3 +11,6 @@ markdown2
 bleach
 python-dateutil
 requests
+lxml
+scrapy
+chatterbot
