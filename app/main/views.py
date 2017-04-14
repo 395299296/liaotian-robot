@@ -5,7 +5,7 @@ except ImportError:
 from datetime import datetime, timedelta
 
 from flask import request, redirect, render_template, url_for, abort, flash, g, session
-from flask import current_app, make_response
+from flask import current_app, make_response, send_from_directory
 from flask.views import MethodView
 
 # from flask.ext.login import login_required, current_user
@@ -20,11 +20,18 @@ from accounts.models import User
 from accounts.permissions import admin_permission, editor_permission, writer_permission, reader_permission
 from blog.config import RobotBlogSettings
 
+from . import config, reply, receive, chatter
+from random import randint
+from imp import reload
+from urllib.parse import quote, unquote
+from collections import deque
+from collections import defaultdict
 
 PER_PAGE = RobotBlogSettings['pagination'].get('per_page', 10)
 ARCHIVE_PER_PAGE = RobotBlogSettings['pagination'].get('archive_per_page', 10)
 BACKGROUND = RobotBlogSettings['background_image']
 
+CACHE_CONTENT = defaultdict(deque)
 
 def get_base_data():
     pages = models.Post.objects.filter(post_type='page', is_draft=False)
@@ -38,11 +45,45 @@ def get_base_data():
         }
     return data
 
+def get_keywords():
+    reload(config)
+    keywords = config.Config.keys()
+    return '、'.join(keywords)
+
+def get_content(content):
+    reload(config)
+    contentlist = deque()
+    for x in config.Config:
+        if x in content:
+            p = __import__("main.%s"%config.Config[x][0]) # import module
+            m = getattr(p,config.Config[x][0])
+            reload(m)
+            c = getattr(m,config.Config[x][1])
+            try:
+                contentlist = CACHE_CONTENT[x]
+                if not contentlist:
+                    contentlist = deque(c().getContent(content))
+                    CACHE_CONTENT[x] = contentlist
+                return contentlist.popleft()
+            except Exception as e:
+                print(str(e))
+                raise e
+            break
+    else:
+        contentlist = CACHE_CONTENT[content]
+        if not contentlist:
+            reload(chatter)
+            contentlist = deque([chatter.Chatter().getContent(content)])
+            CACHE_CONTENT[content] = contentlist
+        return contentlist.popleft()
+
+    return {'type':'text', 'content':content}
+
 def index():
     return 'Hello'
 
-def list_posts():
-    print(request.method)
+def blog_index():
+    
     posts = models.Post.objects.filter(post_type='post', is_draft=False).order_by('-pub_time')
 
     tags = posts.distinct('tags')
@@ -82,8 +123,6 @@ def list_posts():
     widgets = models.Widget.objects(allow_post_types='post')
 
 
-
-
     posts = posts.paginate(page=cur_page, per_page=PER_PAGE)
 
     data = get_base_data()
@@ -96,6 +135,66 @@ def list_posts():
     data['widgets'] = widgets
 
     return render_template('main/index.html', **data)
+
+def wechat_auth():
+    data = request.args
+    test = data.get('test','')
+    if test != '':
+        content = get_content(test)
+        return content['content']
+    
+    signature = data.get('signature','')
+    if signature == '':
+        return 'error'
+
+    timestamp = data.get('timestamp','')
+    nonce = data.get('nonce','')
+    echostr = data.get('echostr','')
+    s = [timestamp,nonce,config.Token]
+    s.sort()
+    s = ''.join(s).encode('utf8')
+    if (hashlib.sha1(s).hexdigest() != signature):
+        return 'failed'
+    
+    return make_response(echostr)
+
+def wechat_inter():
+    xml_str = request.stream.read()
+    # print('Coming Post', xml_str)
+    recMsg = receive.parse_xml(xml_str)
+    toUser = recMsg.FromUserName
+    fromUser = recMsg.ToUserName
+    replyMsg = reply.Msg(toUser, fromUser)
+    if isinstance(recMsg, receive.TextMsg):
+        content = recMsg.Content
+        response = get_content(content)
+        msgType = response['type']
+        content = response['content']
+        if msgType == 'text':
+            replyMsg = reply.TextMsg(toUser, fromUser, content)
+        elif msgType == 'news':
+            replyMsg = reply.NewsMsg(toUser, fromUser, response['title'], response['content'], response['pic_url'], response['url'])
+    elif isinstance(recMsg, receive.ImageMsg):
+        pass
+    elif isinstance(recMsg, receive.EventMsg):
+        if recMsg.Event == 'subscribe':
+            content = config.Welcome.format(key=get_keywords())
+            replyMsg = reply.TextMsg(toUser, fromUser, content)
+
+    return replyMsg.send()
+
+def list_posts():
+
+    if request.method == 'GET':
+        data = request.args
+        print('Coming Get', data)
+        if not data:
+            return blog_index()
+        else:
+            return wechat_auth()
+
+    if request.method == 'POST':
+        return wechat_inter()
 
 def list_wechats():
     posts = models.Post.objects.filter(post_type='wechat', is_draft=False).order_by('-pub_time')
