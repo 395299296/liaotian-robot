@@ -183,6 +183,12 @@ def wechat_inter():
 
     return replyMsg.send()
 
+def girl_download(filename):
+    filename = unquote(filename)
+    if os.path.isfile(os.path.join('girl', filename)):
+        return send_from_directory('girl', filename)
+    abort(404)
+
 def list_posts():
 
     if request.method == 'GET':
