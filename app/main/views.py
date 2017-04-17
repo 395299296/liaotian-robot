@@ -187,8 +187,8 @@ def wechat_inter():
 def girl_download(filename):
     filename = unquote(filename)
     print(filename)
-    if os.path.isfile(os.path.join('girl', filename)):
-        return send_from_directory('girl', filename)
+    if os.path.isfile(os.path.join('main/girl', filename)):
+        return send_from_directory('main/girl', filename)
     abort(404)
 
 def list_posts():
