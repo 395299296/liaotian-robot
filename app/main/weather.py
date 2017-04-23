@@ -16,7 +16,7 @@ class Weather():
 					city = x['pinyin'].lower()
 					break;
 			subprocess.run('scrapy crawl weather -a city=%s' % city, shell=True, cwd='weather')
-			with open('weather/weather.txt', 'r', encoding="utf-8") as file_object:
+			with open(path.join(d, 'weather/weather.txt'), 'r', encoding="utf-8") as file_object:
 				self.contents.append({'type':'text', 'content':file_object.read()})
 
 		return self.contents
