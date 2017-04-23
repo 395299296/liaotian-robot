@@ -12,7 +12,7 @@ class Movies():
 		fo = open(outfile, "r+")
 		fo.truncate()
 		fo.close()
-		subprocess.run('scrapy crawl movie -o movies.json -t json', shell=True, cwd='movie')
+		subprocess.run('scrapy crawl %s -o %s -t json' % (path.join(d, "movie"), outfile), shell=True, cwd='movie')
 		with open(outfile) as json_file:
 			data = json.load(json_file)
 			for x in data:
