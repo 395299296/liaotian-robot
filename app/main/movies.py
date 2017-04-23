@@ -1,16 +1,19 @@
 import json
 import subprocess
+from os import path
 
 class Movies():
 	def __init__( self ):
 		self.contents = []
 
 	def getContent(self, content):
-		fo = open("movie/movies.json", "r+")
+    	d = path.dirname(__file__)
+    	outfile = path.join(d, "movie/movies.json")
+		fo = open(outfile, "r+")
 		fo.truncate()
 		fo.close()
 		subprocess.run('scrapy crawl movie -o movies.json -t json', shell=True, cwd='movie')
-		with open('movie/movies.json') as json_file:
+		with open(outfile) as json_file:
 			data = json.load(json_file)
 			for x in data:
 				info = '%s\n%s' % (x['movie_title'], x['movie_link'])
