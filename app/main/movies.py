@@ -7,8 +7,8 @@ class Movies():
 		self.contents = []
 
 	def getContent(self, content):
-    	d = path.dirname(__file__)
-    	outfile = path.join(d, "movie/movies.json")
+		d = path.dirname(__file__)
+		outfile = path.join(d, "movie/movies.json")
 		fo = open(outfile, "r+")
 		fo.truncate()
 		fo.close()
