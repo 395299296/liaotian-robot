@@ -8,7 +8,7 @@ class Weather():
 
 	def getContent(self, content):
 		d = path.dirname(__file__)
-		with open(path.join(d， 'city.json'), 'r', encoding="utf-8") as json_file:
+		with open(path.join(d, 'city.json'), 'r', encoding="utf-8") as json_file:
 			data = json.load(json_file)
 			city = 'shenzhen'
 			for x in data:
