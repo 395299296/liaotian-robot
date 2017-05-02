@@ -64,19 +64,22 @@ def get_content(content):
                 contentlist = CACHE_CONTENT[x]
                 if not contentlist:
                     contentlist = deque(c().getContent(content))
-                    CACHE_CONTENT[x] = contentlist
-                return contentlist.popleft()
+                    if contentlist:
+                        CACHE_CONTENT[x] = contentlist
+                if contentlist:
+                    return contentlist.popleft()
             except Exception as e:
                 print(str(e))
                 raise e
-            break
     else:
         contentlist = CACHE_CONTENT[content]
         if not contentlist:
             reload(chatter)
             contentlist = deque([chatter.Chatter().getContent(content)])
-            CACHE_CONTENT[content] = contentlist
-        return contentlist.popleft()
+            if contentlist:
+                CACHE_CONTENT[content] = contentlist
+        if contentlist:
+            return contentlist.popleft()
 
     return {'type':'text', 'content':content}
 
@@ -265,7 +268,7 @@ def post_detail(slug, post_type='post', fix=False, is_preview=False):
         # print session.get('email')
 
 
-    if request.form.get('oct-comment') and form.validate_on_submit():
+    if request.form.get('robot-comment') and form.validate_on_submit():
         robotblog_create_comment(form, post)
         url = '{0}#comment'.format(url_for('main.post_detail', slug=slug))
         msg = 'Succeed to comment, and it will be displayed when the administrator reviews it.'

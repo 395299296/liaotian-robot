@@ -31,8 +31,8 @@ RobotBlogSettings = {
         'allow_comment': os.environ.get('allow_comment', 'true').lower() == 'true',
         'comment_type': os.environ.get('comment_type', 'robotblog').lower(), # currently, RobotBlog only supports duoshuo comment
         'comment_opt':{
-            'robotblog': 'oct-blog', # shotname of robotblog
-            'duoshuo': 'oct-blog', # shotname of duoshuo
+            'robotblog': 'robot-blog', # shotname of robotblog
+            'duoshuo': 'robot-blog', # shotname of duoshuo
             }
     },
     'donation': {

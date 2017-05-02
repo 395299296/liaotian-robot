@@ -3,7 +3,8 @@ Config = {
 	'电影':['movies', 'Movies'],
 	'天气':['weather', 'Weather'],
 	'美女':['girls','Girls'],
-	'美食':['food','Food']
+    '美食':['food','Food'],
+	'歌词':['lyrics','Lyrics']
 }
 Token = '91930762d6cc738b'
 Domain = 'www.liaotian2020.com'
