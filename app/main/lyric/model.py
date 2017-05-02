@@ -43,9 +43,12 @@ class Model():
         with tf.variable_scope('rnnlm'):
             softmax_w = tf.get_variable("softmax_w",
                                         [args.rnn_size, args.vocab_size])
+            softmax_w.reuse = True
             softmax_b = tf.get_variable("softmax_b", [args.vocab_size])
+            softmax_b.reuse = True
 
         embedding = tf.get_variable("embedding", [args.vocab_size, args.rnn_size])
+        embedding.reuse = True
         inputs = tf.nn.embedding_lookup(embedding, self.input_data)
 
         # dropout beta testing: double check which one should affect next line
