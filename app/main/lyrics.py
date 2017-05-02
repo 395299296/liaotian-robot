@@ -11,6 +11,6 @@ class Lyrics():
             c = r.sub('',content).strip()
             c = c[2:] #过滤歌词俩字
             if not c:
-                c = '亲爱的'
+                c = u'亲爱的'
             self.contents.append({'type':'text', 'content':sample.sample(c)})
         return self.contents
