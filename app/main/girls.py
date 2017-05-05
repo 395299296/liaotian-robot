@@ -2,7 +2,8 @@ from random import randint
 from urllib.parse import quote, unquote
 from . import config
 import os
-import os.path
+import re
+
 
 rootdir = 'girl/'
 
