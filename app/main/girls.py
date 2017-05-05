@@ -26,7 +26,7 @@ class Girls():
                     rstr = '|'.join(filters)
                     pattern = re.compile(rstr)
                     for x in intro:
-                        if '主页':
+                        if '主页' in x:
                             continue
                         news['content'] += re.sub(pattern, '', x)
                     pic_url = 'http://{domain}/girl/{name}.jpg'.format(domain=config.Domain,name=quote(dirname))
