@@ -21,10 +21,13 @@ class Girls():
                     news['title'] = dirname
                     intro = file_object.readlines()
                     news['content'] = ''
+                    filters = ['淘宝', '淘女郎', '工作', '勿扰', '拍摄', '拍片']
+                    rstr = '|'.join(filters)
+                    pattern = re.compile(rstr)
                     for x in intro:
-                        if '主页' in x or '淘宝' in x:
+                        if '主页':
                             continue
-                        news['content'] += x
+                        news['content'] += re.sub(pattern, '', x)
                     pic_url = 'http://{domain}/girl/{name}.jpg'.format(domain=config.Domain,name=quote(dirname))
                     files = os.listdir(parent + dirname)
                     n = randint(0,len(files)-1)
