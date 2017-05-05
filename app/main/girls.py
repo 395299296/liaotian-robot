@@ -22,7 +22,7 @@ class Girls():
                     news['title'] = dirname
                     intro = file_object.readlines()
                     news['content'] = ''
-                    filters = ['淘宝', '淘女郎', '工作', '勿扰', '拍摄', '拍片']
+                    filters = ['淘宝', '淘女郎', '工作', '勿扰', '拍摄', '拍片', '片']
                     rstr = '|'.join(filters)
                     pattern = re.compile(rstr)
                     for x in intro:
