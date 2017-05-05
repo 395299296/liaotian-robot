@@ -194,6 +194,15 @@ def girl_download(filename):
         return send_from_directory(path, filename)
     abort(404)
 
+def girl_download2(dirname, filename):
+    filename = unquote(filename)
+    dirname = unquote(dirname)
+    path = os.path.abspath('girl')
+    path = os.path.join(path, dirname)
+    if os.path.isfile(os.path.join(path, filename)):
+        return send_from_directory(path, filename)
+    abort(404)
+
 def list_posts():
 
     if request.method == 'GET':
