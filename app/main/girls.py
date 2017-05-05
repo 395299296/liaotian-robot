@@ -15,7 +15,7 @@ class Girls():
             count = len(dirnames)
             if count > 0:
                 dirname = dirnames[randint(0,count-1)]
-                with open('%s/%s/个人简介.txt' % (rootdir, dirname), 'r', encoding="gbk") as file_object:
+                with open('%s/%s/个人简介.txt' % (rootdir, dirname), 'r', encoding="utf-8") as file_object:
                     news = {}
                     news['type'] = 'news'
                     news['title'] = dirname
