@@ -25,7 +25,7 @@ class Girls():
                     for x in intro:
                         if '主页' in x:
                             continue
-                        result = getKeyInfo(x, news['content'])
+                        result = self.getKeyInfo(x, news['content'])
                         if result:
                             if news['content'][-1] != '\n':
                                 news['content'] += '\n'    
