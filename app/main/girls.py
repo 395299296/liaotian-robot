@@ -31,7 +31,10 @@ class Girls():
                                 news['content'] += '\n'    
                             news['content'] += '\n'.join(result)
                         else:
-                            news['content'] += x
+                            for y in ['坐标:', '身高:', '体重:', '三围:']:
+                                if x.startswith(y):
+                                    news['content'] += x
+                                    break
                     pic_url = 'http://{domain}/girl/{name}.jpg'.format(domain=config.Domain,name=quote(dirname))
                     files = os.listdir(parent + dirname)
                     n = randint(0,len(files)-1)
@@ -69,10 +72,10 @@ class Girls():
                 result.append('微信:'+wechat[0])
 
         if not 'QQ' in content:
-            pattern = re.compile(r'Q.*?[1-9]\\d{4,10}', re.IGNORECASE)
+            pattern = re.compile(r'Q.*?[1-9]\d{4,10}', re.IGNORECASE)
             qq = re.findall(pattern, s)
             if qq:
-                pattern = re.compile(r'[1-9]\\d{4,10}', re.IGNORECASE)
+                pattern = re.compile(r'[1-9]\d{4,10}', re.IGNORECASE)
                 qq = re.findall(pattern, qq[0])
                 result.append('QQ:'+qq[0])
 
