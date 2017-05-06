@@ -58,7 +58,7 @@ class Girls():
                 result.append('三围:'+sanwei[0])
 
         if not '手机' in content:
-            pattern = re.compile(r'1\d{10}', re.IGNORECASE)
+            pattern = re.compile(r'1[3|4|5|8]\d{9}', re.IGNORECASE)
             phone = re.findall(pattern, s)
             if phone:
                 result.append('手机:'+phone[0])
@@ -69,6 +69,8 @@ class Girls():
             if wechat:
                 pattern = re.compile(r'[A-Za-z0-9_]+', re.IGNORECASE)
                 wechat = re.findall(pattern, wechat[0])
+                if phone[0] in wechat[0]:
+                    wechat[0] = phone[0]
                 result.append('微信:'+wechat[0])
 
         if not 'QQ' in content:
