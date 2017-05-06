@@ -69,7 +69,7 @@ class Girls():
             if wechat:
                 pattern = re.compile(r'[A-Za-z0-9_]+', re.IGNORECASE)
                 wechat = re.findall(pattern, wechat[0])
-                if phone[0] in wechat[0]:
+                if phone and phone[0] in wechat[0]:
                     wechat[0] = phone[0]
                 result.append('微信:'+wechat[0])
 
