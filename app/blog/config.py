@@ -94,7 +94,9 @@ class PrdConfig(Config):
     MONGODB_SETTINGS = {
             'db': os.environ.get('DB_NAME') or 'RobotBlog',
             'host': os.environ.get('MONGO_HOST') or 'localhost',
-            # 'port': 12345
+            'username':'test',
+            'password':'123456',
+            'port': 27017
         }
 
 class TestingConfig(Config):
