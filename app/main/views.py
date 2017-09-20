@@ -72,7 +72,7 @@ def get_content(content):
                 print(str(e))
                 raise e
     else:
-        content = ""
+        content = None
         # contentlist = CACHE_CONTENT[content]
         # if not contentlist:
         #     reload(chatter)
@@ -175,10 +175,11 @@ def wechat_inter():
         response = get_content(content)
         msgType = response['type']
         content = response['content']
-        if msgType == 'text':
-            replyMsg = reply.TextMsg(toUser, fromUser, content)
-        elif msgType == 'news':
-            replyMsg = reply.NewsMsg(toUser, fromUser, response['title'], response['content'], response['pic_url'], response['url'])
+        if content != None:
+            if msgType == 'text':
+                replyMsg = reply.TextMsg(toUser, fromUser, content)
+            elif msgType == 'news':
+                replyMsg = reply.NewsMsg(toUser, fromUser, response['title'], response['content'], response['pic_url'], response['url'])
     elif isinstance(recMsg, receive.ImageMsg):
         pass
     elif isinstance(recMsg, receive.EventMsg):
