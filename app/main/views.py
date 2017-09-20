@@ -72,14 +72,15 @@ def get_content(content):
                 print(str(e))
                 raise e
     else:
-        contentlist = CACHE_CONTENT[content]
-        if not contentlist:
-            reload(chatter)
-            contentlist = deque([chatter.Chatter().getContent(content)])
-            if contentlist:
-                CACHE_CONTENT[content] = contentlist
-        if contentlist:
-            return contentlist.popleft()
+        content = ""
+        # contentlist = CACHE_CONTENT[content]
+        # if not contentlist:
+        #     reload(chatter)
+        #     contentlist = deque([chatter.Chatter().getContent(content)])
+        #     if contentlist:
+        #         CACHE_CONTENT[content] = contentlist
+        # if contentlist:
+        #     return contentlist.popleft()
 
     return {'type':'text', 'content':content}
 
