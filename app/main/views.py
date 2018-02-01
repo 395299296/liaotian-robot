@@ -72,7 +72,7 @@ def get_content(content):
                 print(str(e))
                 raise e
     else:
-        content = None
+        content = ''
         # contentlist = CACHE_CONTENT[content]
         # if not contentlist:
         #     reload(chatter)
