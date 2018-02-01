@@ -26,6 +26,7 @@ from imp import reload
 from urllib.parse import quote, unquote
 from collections import deque
 from collections import defaultdict
+import hashlib
 import os
 
 PER_PAGE = RobotBlogSettings['pagination'].get('per_page', 10)
